@@ -37,6 +37,9 @@ class R2Money:
         self.used_nonce = {}
         self.min_delay = 0
         self.max_delay = 0
+        self.min_swap_amount = 0
+        self.max_swap_amount = 0
+        self.swap_times = 0
         self.swap_amount = 0
         self.earn_times = 0
         self.earn_amount_min = 0.1  # Minimum earn amount (fixed at 0.1)
@@ -62,7 +65,7 @@ class R2Money:
         print(Fore.YELLOW + Style.BRIGHT + "    🧑‍💻 Author     : Assistant")
         print(Fore.YELLOW + Style.BRIGHT + "    🌐 Status     : Running & Monitoring...")
         print(Fore.CYAN + Style.BRIGHT + "    ────────────────────────────────")
-        print(Fore.MAGENTA + Style.BRIGHT + "    🧬 Powered by Ansh | v1.0 🚀")
+        print(Fore.MAGENTA + Style.BRIGHT + "    🧬 Powered by AI | v1.0 🚀")
         print(Fore.LIGHTGREEN_EX + Style.BRIGHT + "═" * 60 + "\n")
 
     def format_seconds(self, seconds):
@@ -273,8 +276,20 @@ class R2Money:
     def print_question(self):
         while True:
             try:
-                self.swap_amount = float(input(f"{Fore.YELLOW + Style.BRIGHT}Enter swap amount: {Style.RESET_ALL}").strip())
+                self.swap_times = int(input(f"{Fore.YELLOW + Style.BRIGHT}Number of times to swap: {Style.RESET_ALL}").strip())
                 break
+            except ValueError:
+                print(f"{Fore.RED + Style.BRIGHT}Invalid input. Enter a number.{Style.RESET_ALL}")
+
+        print(f"{Fore.CYAN + Style.BRIGHT}📊 Swap Amount Configuration:{Style.RESET_ALL}")
+        while True:
+            try:
+                self.min_swap_amount = float(input(f"{Fore.YELLOW + Style.BRIGHT}Enter minimum swap amount: {Style.RESET_ALL}").strip())
+                self.max_swap_amount = float(input(f"{Fore.YELLOW + Style.BRIGHT}Enter maximum swap amount (must be >= min swap amount): {Style.RESET_ALL}").strip())
+                if self.max_swap_amount >= self.min_swap_amount:
+                    break
+                else:
+                    print(f"{Fore.RED + Style.BRIGHT}Maximum swap amount must be >= minimum swap amount.{Style.RESET_ALL}")
             except ValueError:
                 print(f"{Fore.RED + Style.BRIGHT}Invalid input. Enter a number.{Style.RESET_ALL}")
 
@@ -333,10 +348,21 @@ class R2Money:
         await self.perform_approval1(private_key, address, use_proxy)
 
         # Step 3: Swap (user defined amount)
-        self.log(f"{Fore.YELLOW + Style.BRIGHT}📝 Step 3: Performing Swap{Style.RESET_ALL}")
-        swap_amount_wei = int(self.swap_amount * 10**6)  # USDC has 6 decimals
-        self.log(f"{Fore.CYAN + Style.BRIGHT}  Swapping {self.swap_amount} USDC (Wei: {swap_amount_wei}){Style.RESET_ALL}")
-        await self.perform_swap(private_key, address, swap_amount_wei, use_proxy)
+        self.log(f"{Fore.YELLOW + Style.BRIGHT}📝 Step 3: Performing Swap ({self.swap_times} times){Style.RESET_ALL}")
+        self.log(f"{Fore.CYAN + Style.BRIGHT}  📊 Amount Range: {self.min_swap_amount} - {self.max_swap_amount} USDC{Style.RESET_ALL}")
+
+        for i in range(self.swap_times):
+            random_swap_amount = round(random.uniform(self.min_swap_amount, self.max_swap_amount), 3)
+            swap_amount_wei = int(random_swap_amount * 10**6)  # USDC has 6 decimals
+
+            self.log(f"{Fore.CYAN + Style.BRIGHT}  🔄 Swap transaction {i+1}/{self.swap_times}{Style.RESET_ALL}")
+            self.log(f"{Fore.GREEN + Style.BRIGHT}  🎲 Random amount: {random_swap_amount} USDC (Wei: {swap_amount_wei}){Style.RESET_ALL}")
+            await self.perform_swap(private_key, address, swap_amount_wei, use_proxy)
+
+            if i < self.swap_times - 1:
+                delay = random.randint(self.min_delay, self.max_delay)  # Assuming min_delay and max_delay are defined and used for general delays
+                self.log(f"{Fore.BLUE + Style.BRIGHT}  ⏳ Waiting {delay} seconds before next swap...{Style.RESET_ALL}")
+                await asyncio.sleep(delay)
 
         # Step 4: Second approval (one time, unlimited)
         self.log(f"{Fore.YELLOW + Style.BRIGHT}📝 Step 4: Second Approval (0x4f5b54d4...){Style.RESET_ALL}")
@@ -386,4 +412,3 @@ class R2Money:
 if __name__ == "__main__":
     bot = R2Money()
     asyncio.run(bot.main())
-
