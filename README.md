@@ -29,4 +29,4 @@ python r2_money.py
 
 ```
 
-# **start the repo**
+# **Star⭐ the repo**
