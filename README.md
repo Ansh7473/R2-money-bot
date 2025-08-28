@@ -1,7 +1,7 @@
 # R2-money-bot
 
 
-#get usdt to wallet throght there discord thats it 
+# get usdt to wallet throght there discord thats it 
 
 
 ```
