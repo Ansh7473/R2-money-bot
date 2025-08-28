@@ -28,3 +28,5 @@ create accounts.txt   on pvkey each line
 python r2_money.py
 
 ```
+
+# **start the repo**
