@@ -62,7 +62,7 @@ class R2Money:
         print(Fore.YELLOW + Style.BRIGHT + "    🧑‍💻 Author     : Assistant")
         print(Fore.YELLOW + Style.BRIGHT + "    🌐 Status     : Running & Monitoring...")
         print(Fore.CYAN + Style.BRIGHT + "    ────────────────────────────────")
-        print(Fore.MAGENTA + Style.BRIGHT + "    🧬 Powered by AI | v1.0 🚀")
+        print(Fore.MAGENTA + Style.BRIGHT + "    🧬 Powered by Ansh | v1.0 🚀")
         print(Fore.LIGHTGREEN_EX + Style.BRIGHT + "═" * 60 + "\n")
 
     def format_seconds(self, seconds):
@@ -386,3 +386,4 @@ class R2Money:
 if __name__ == "__main__":
     bot = R2Money()
     asyncio.run(bot.main())
+
