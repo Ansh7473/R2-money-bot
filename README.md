@@ -9,3 +9,13 @@ pip install web3 eth-account aiohttp aiohttp_socks fake-useragent colorama pytz 
 
 
 ```
+
+
+
+```
+
+create private.txt
+
+
+
+```
