@@ -19,3 +19,10 @@ create private.txt
 
 
 ```
+
+
+```
+
+python r2_money.py
+
+```
