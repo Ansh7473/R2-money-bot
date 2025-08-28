@@ -16,7 +16,7 @@ pip install web3 eth-account aiohttp aiohttp_socks fake-useragent colorama pytz 
 
 ```
 
-create accounts.txt
+create accounts.txt   on pvkey each line 
 
 
 
